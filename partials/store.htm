@@ -1,0 +1,40 @@
+﻿<table class="table table-bordered">
+  <tr ng-repeat="product in store.products | ticketStore | orderBy:'seq'" >
+    <td>
+      <a href="#/products/{{product.product_id}}"><b>{{product.type}}</b></a><br />
+      {{product.description}}
+    </td>
+    <td class="tdRight">
+      {{product.cost_per | INR}}
+    </td>
+     <td class="tdCenter">
+      <div class="input-append">
+        <!-- use type=tel instead of  to prevent spinners -->
+        <button 
+          class="btn btn-inverse" type="button" 
+          ng-disabled="product.quantity <= 0"
+          ng-click="cart.addItem(product.product_id, product.type, product.cost_per, -1);store.changeQty(product.product_id,product.quantity,'SUB', product)">-</button>
+        <input
+          class="span3 text-center" type="tel" 
+          ng-model="product.quantity" 
+          ng-change="cart.addItem(product.product_id, product.type, product.cost_per, product.quantity);store.changeQty(product.product_id,product.quantity,'EQ', product)" />
+        <button 
+          class="btn btn-success" type="button" 
+          ng-click="cart.addItem(product.product_id, product.type, product.cost_per, +1);store.changeQty(product.product_id,product.quantity,'ADD', product)">+</button>
+      </div>
+    </td>
+    <!--<td class="tdCenter">
+      <a href="" ng-click="cart.addItem(product.product_id, product.type, product.cost_per, 1)">
+        add to cart
+      </a>
+    </td>-->
+  </tr>
+  <tr class="well">
+    <td class="tdRight" colspan="4">
+      <a href="default.htm#/cart" title="go to shopping cart" ng-disabled="cart.getTotalCount() < 1">
+        <i class="icon-shopping-cart" />
+        <b>{{cart.getTotalCount()}}</b> items, <b>{{cart.getTotalPrice() | INR}}</b>
+      </a>
+    </td>
+  </tr>
+</table>
